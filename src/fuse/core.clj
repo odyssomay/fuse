@@ -113,16 +113,28 @@
 ;;;;
 ;;;; Tasks
 
-(defn clean [env]
+;;;; Compiling
+
+(defn auto [env])
+
+(defn clean [env])
+
+(defn once [env])
+
+;;;; Installing
+
+(defn install [env] (install-clojurec env false))
+
+(defn uninstall [env]
   (let [f (fuse-dir)]
     (when (.exists f)
       (FileUtils/delete f FileUtils/RECURSIVE))))
 
-(defn install [env] (install-clojurec env false))
-
-(defn reinstall [env] (clean env) (install env))
+(defn reinstall [env] (uninstall env) (install env))
 
 (defn upgrade [env] (install-clojurec env true))
+
+;;;; Testing
 
 (defn test-run [env]
   (test-clojurec (-> env add-cljc-repo)))
