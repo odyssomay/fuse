@@ -12,8 +12,6 @@
       (info "Creating fuse directory" (.getCanonicalPath f))
       (.mkdir f))))
 
-(defn cljc-dir [] (jio/file (fuse-dir) "clojurec"))
-
 ;;;;
 ;;;; Env
 
