@@ -23,7 +23,8 @@
         cljc-dir (or (:cljc-path env)
                      (jio/file fuse-dir "clojurec"))
         env (merge {:fuse-path (jio/file fuse-dir)
-                    :cljc-path (jio/file cljc-dir)}
+                    :cljc-path (jio/file cljc-dir)
+                    :gcc-command "gcc"}
                    env)]
     env))
 
