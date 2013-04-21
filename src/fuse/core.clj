@@ -36,7 +36,7 @@
       .readEnvironment .findGitDir .build))
 
 (defn add-cljc-repo [env]
-  (let [repo (file->repo (:cljc-dir env))
+  (let [repo (file->repo (:cljc-path env))
         git (Git. repo)
         env (assoc env
               :repo repo
@@ -52,7 +52,7 @@
 
 (defn download-clojurec [env]
   (info " 1. Downloading clojurec")
-  (let [target (:cljc-dir env)]
+  (let [target (:cljc-path env)]
     (when (.exists target)
       (info "    ...already exists"
             "(see subtasks upgrade and reinstall)"))
@@ -105,7 +105,7 @@
 (defn install [env] (install-clojurec env false))
 
 (defn uninstall [env]
-  (let [f (:fuse-dir env)]
+  (let [f (:fuse-path env)]
     (when (.exists f)
       (FileUtils/delete f FileUtils/RECURSIVE))))
 

@@ -22,11 +22,11 @@
 
 (defn project->env [project]
   (let [env (:fuse project)
-        fuse-dir (or (:fuse-dir env) (fuse-dir))
-        cljc-dir (or (:cljc-dir env)
+        fuse-dir (or (:fuse-path env) (fuse-dir))
+        cljc-dir (or (:cljc-path env)
                      (jio/file fuse-dir "clojurec"))
-        env (merge {:fuse-dir (jio/file fuse-dir)
-                    :cljc-dir (jio/file cljc-dir)}
+        env (merge {:fuse-path (jio/file fuse-dir)
+                    :cljc-path (jio/file cljc-dir)}
                    env)]
     env))
 
