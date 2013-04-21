@@ -93,7 +93,8 @@
 
 ;;;; Compiling
 
-(defn auto [env])
+(defn auto [env]
+  (error "Not implemented yet, sorry! :("))
 
 (defn clean [env])
 
