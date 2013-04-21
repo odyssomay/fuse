@@ -30,13 +30,15 @@
                    env)]
     env))
 
+;;;;
+;;;; Task
 
 (defn fuse
   "Compile clojure code to native C.
   
   Options:
-   :cljc-src
-   :cljc-compile?
+   :src-dirs
+   :compile?
   
   Calling without any subtask is the same as calling the subtask 'once'.
   
@@ -46,7 +48,7 @@
     clean            Removes all generated and compiled files.
     once             Compile once and exit.
    
-   clojurec installation subtasks:
+   Installation subtasks:
     install          Install clojurec (does nothing if already installed).
     reinstall        Same as remove + install.
     uninstall        Remove clojurec installation.
@@ -55,4 +57,25 @@
    Testing subtasks:
     test             Simple test of the clojurec compiler.
     clojure-test     Full unit testing of clojure in clojurec."
-  [project & args])
+  {:arglists '([project]
+               [project subtask])}
+  [project & args]
+  (let [subtask (if (empty? args) "once" (first args))
+        f (case subtask
+            "auto"  auto
+            "clean" clean
+            "once"  once
+            
+            "install"   install
+            "reinstall" reinstall
+            "uninstall" uninstall
+            "upgrade"   upgrade
+            
+            "test"         test-run
+            "clojure-test" clojure-test-run
+            
+            (do (error (str "fuse does not have a subtask called '" subtask "'"))
+              (info "\nSee 'lein help fuse' for available subtasks.")))
+        env (project->env project)]
+    (create-fuse-dir)
+    (f env)))
