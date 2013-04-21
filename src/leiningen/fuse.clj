@@ -25,8 +25,8 @@
         fuse-dir (or (:fuse-dir env) (fuse-dir))
         cljc-dir (or (:cljc-dir env)
                      (jio/file fuse-dir "clojurec"))
-        env (merge {:fuse-dir fuse-dir
-                    :cljc-dir cljc-dir}
+        env (merge {:fuse-dir (jio/file fuse-dir)
+                    :cljc-dir (jio/file cljc-dir)}
                    env)]
     env))
 
