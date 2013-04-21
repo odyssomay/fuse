@@ -120,6 +120,11 @@
 
 (defn clojure-test-run [env]
   (test-clojurec-full (-> env add-cljc-repo)))
+
+;;;; Help tasks
+
+(defn install-if-not-installed [env])
+
 (defn check-for-gcc [env]
   (try
     (jsh/sh (:gcc-command env) "--version")
