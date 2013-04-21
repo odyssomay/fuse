@@ -1,12 +1,8 @@
 (ns fuse.core
-  (:require [clojure.java.io :as jio]
-            [leiningen.core.user :as lein-user])
   (:import org.eclipse.jgit.util.FileUtils
            (org.eclipse.jgit.api
              CloneCommand
-             Git
-             SubmoduleInitCommand
-             SubmoduleUpdateCommand)
+             Git)
            org.eclipse.jgit.storage.file.FileRepositoryBuilder))
 
 ;;;; Print utilities
@@ -31,19 +27,6 @@
 (defn error   [& args] (printc RED    args))
 (defn success [& args] (printc GREEN  args))
 
-;;;;
-;;;; Directories
-
-(defn fuse-dir []
-  (jio/file (lein-user/leiningen-home) "fuse"))
-
-(defn create-fuse-dir []
-  (let [f (fuse-dir)]
-    (when-not (.exists f)
-      (info "Creating fuse directory" (.getCanonicalPath f))
-      (.mkdir f))))
-
-(defn cljc-dir [] (jio/file (fuse-dir) "clojurec"))
 ;;;;
 ;;;; Repository
 
@@ -95,20 +78,16 @@
         "(this will take a while)"))
 
 (defn install-clojurec [env upgrade?]
-  (let [env (merge {:fuse-dir (fuse-dir)
-                    :cljc-dir (jio/file (fuse-dir) "clojurec")}
-                   env)]
-    (create-fuse-dir)
-    (when-not upgrade?
-      (section "Installing clojurec")
-      (download-clojurec env))
-    (let [env (add-cljc-repo env)]
-      (when upgrade?
-        (section "Upgrading clojurec")
-        (upgrade-clojurec env))
-      (setup-submodules env)
-      (test-clojurec env))
-    (success "Done installing clojurec")))
+  (when-not upgrade?
+    (section "Installing clojurec")
+    (download-clojurec env))
+  (let [env (add-cljc-repo env)]
+    (when upgrade?
+      (section "Upgrading clojurec")
+      (upgrade-clojurec env))
+    (setup-submodules env)
+    (test-clojurec env))
+  (success "Done installing clojurec"))
 
 ;;;;
 ;;;; Tasks
@@ -126,7 +105,7 @@
 (defn install [env] (install-clojurec env false))
 
 (defn uninstall [env]
-  (let [f (fuse-dir)]
+  (let [f (:fuse-dir env)]
     (when (.exists f)
       (FileUtils/delete f FileUtils/RECURSIVE))))
 
