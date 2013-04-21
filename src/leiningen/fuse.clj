@@ -6,11 +6,8 @@
 ;;;;
 ;;;; Directories
 
-(defn fuse-dir []
-  (jio/file (lein-user/leiningen-home) "fuse"))
-
-(defn create-fuse-dir []
-  (let [f (fuse-dir)]
+(defn create-fuse-dir [env]
+  (let [f (:fuse-path env)]
     (when-not (.exists f)
       (info "Creating fuse directory" (.getCanonicalPath f))
       (.mkdir f))))
@@ -22,7 +19,9 @@
 
 (defn project->env [project]
   (let [env (:fuse project)
-        fuse-dir (or (:fuse-path env) (fuse-dir))
+        fuse-dir (or (:fuse-path env)
+                     (jio/file (lein-user/leiningen-home)
+                               "fuse"))
         cljc-dir (or (:cljc-path env)
                      (jio/file fuse-dir "clojurec"))
         env (merge {:fuse-path (jio/file fuse-dir)
@@ -77,5 +76,7 @@
             (do (error (str "fuse does not have a subtask called '" subtask "'"))
               (info "\nSee 'lein help fuse' for available subtasks.")))
         env (project->env project)]
-    (create-fuse-dir)
+    (create-fuse-dir env)
+    (install-if-not-installed env)
+    (check-for-gcc env)
     (f env)))
