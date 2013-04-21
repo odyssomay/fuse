@@ -1,4 +1,5 @@
 (ns fuse.core
+  (:require [clojure.java.shell :as jsh])
   (:import org.eclipse.jgit.util.FileUtils
            (org.eclipse.jgit.api
              CloneCommand
@@ -120,3 +121,14 @@
 
 (defn clojure-test-run [env]
   (test-clojurec-full (-> env add-cljc-repo)))
+(defn check-for-gcc [env]
+  (try
+    (jsh/sh (:gcc-command env) "--version")
+    true
+    (catch java.io.IOException e
+      (error "Couldn't run gcc.")
+      (println e)
+      (info "\nPlease install gcc or specify a gcc"
+            "command in the fuse options."
+            "See 'lein help fuse' for more info.")
+      nil)))
