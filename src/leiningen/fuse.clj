@@ -16,7 +16,7 @@
     clean            Removes all generated and compiled files.
     once             Compile once and exit.
    
-   Clojurec installation subtasks:
+   clojurec installation subtasks:
     install          Install clojurec (does nothing if already installed).
     reinstall        Same as remove + install.
     uninstall        Remove clojurec installation.
