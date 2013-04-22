@@ -30,18 +30,17 @@
 
 (defn project->env [project]
   (let [env (:fuse project)
-        fuse-dir (or (:fuse-path env)
+        fuse-dir (or (:install-path env)
                      (jio/file (lein-user/leiningen-home)
                                "fuse"))
-        cljc-dir (or (:cljc-path env)
-                     (jio/file fuse-dir "clojurec"))
+        cljc-dir (jio/file fuse-dir "clojurec")
         target-path (or (:target-path env)
                         (jio/file (:target-path project) "fuse"))
-        env (merge {:fuse-path (jio/file fuse-dir)
-                    :cljc-path (jio/file cljc-dir)
+        env (merge {:gcc-command "gcc"}
+                   env
+                   {:install-path (jio/file fuse-dir)
                     :target-path (jio/file target-path)
-                    :gcc-command "gcc"}
-                   env)]
+                    :cljc-path (jio/file cljc-dir)})]
     env))
 
 ;;;;
