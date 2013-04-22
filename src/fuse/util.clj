@@ -1,5 +1,6 @@
 (ns fuse.util
-  (:import org.eclipse.jgit.util.FileUtils))
+  (:import org.eclipse.jgit.util.FileUtils
+           org.eclipse.jgit.lib.ProgressMonitor))
 
 ;;;;
 ;;;; Print
@@ -25,8 +26,48 @@
 (defn success [& args] (printc GREEN  args))
 
 ;;;;
-;;;; File
+;;;; Misc
 
 (defn delete-directory [f]
   (when (.exists f)
     (FileUtils/delete f FileUtils/RECURSIVE)))
+
+;;;; JGit progress indicator
+
+(defn repeat-char [n c]
+  (apply str (take n (repeat c))))
+
+(defn progress-printer [title-prefix progress-prefix]
+  (let [width 40
+        total (atom 0)
+        finished (atom 0)
+        running-task? (atom false)]
+    (add-watch
+      finished nil
+      (fn [_ _ _ finished]
+        (let [done (let [t @total]
+                     (if (zero? t)
+                       0
+                       (min width 
+                            (int (* width (/ finished t))))))]
+          (print
+            (str "\r" progress-prefix "["
+                 (repeat-char done "=")
+                 (repeat-char (- width done) "-")
+                 "]"))
+          (flush))))
+    (reify ProgressMonitor
+      (beginTask [this title total-work]
+        (println (str (if @running-task? "\n")
+                      title-prefix title))
+        (reset! total total-work)
+        (reset! finished 0)
+        (reset! running-task? true))
+      (endTask [this]
+        (print "\n")
+        (reset! running-task? false))
+      (isCancelled [this] false)
+      (start [this total-tasks])
+      (update [this completed]
+        (swap! finished + completed)))))
+
