@@ -79,7 +79,6 @@
             "once"  c/once
             
             "install"   c/install
-            "reinstall" c/reinstall
             "uninstall" c/uninstall
             "upgrade"   c/upgrade
             
