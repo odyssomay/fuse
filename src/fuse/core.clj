@@ -25,7 +25,7 @@
 
 (defn upgrade-clojurec [env]
   (u/info " 1. Upgrading clojurec")
-  (.pull (:git env)))
+  (.call (.pull (:git env))))
 
 (defn download-clojurec [env]
   (u/info " 1. Downloading clojurec")
@@ -43,9 +43,9 @@
   (u/info " 2. Setting up submodules")
   (let [git (:git env)]
     (u/info "    * init")
-    (.submoduleInit git)
+    (.call (.submoduleInit git))
     (u/info "    * update")
-    (.submoduleUpdate git)))
+    (.call (.submoduleUpdate git))))
 
 (defn test-clojurec [env]
   (u/info " 3. Testing clojurec"))
