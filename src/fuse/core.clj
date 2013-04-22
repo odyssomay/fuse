@@ -1,7 +1,7 @@
 (ns fuse.core
-  (:require [clojure.java.shell :as jsh])
-  (:import org.eclipse.jgit.util.FileUtils
-           (org.eclipse.jgit.api CloneCommand Git)
+  (:require (fuse [util :as u])
+            [clojure.java.shell :as jsh])
+  (:import (org.eclipse.jgit.api CloneCommand Git)
            org.eclipse.jgit.storage.file.FileRepositoryBuilder))
 
 ;;;;
