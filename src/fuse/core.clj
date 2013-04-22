@@ -74,7 +74,10 @@
 (defn auto [env]
   (u/error "Not implemented yet, sorry! :("))
 
-(defn clean [env])
+(defn clean [env]
+  (let [f (:target-path env)]
+    (u/info "Removing" (.getCanonicalPath f))
+    (u/delete-directory f)))
 
 (defn once [env])
 
