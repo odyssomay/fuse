@@ -1,5 +1,5 @@
 (ns fuse.core
-  (:require (fuse install
+  (:require (fuse compile install
                   [util :as u])
             (clojure.java
               [io :as jio]
@@ -11,13 +11,12 @@
 
 ;;;; Compiling
 
-(defn auto [env]
-  (u/error "Not implemented yet, sorry! :("))
+(def auto fuse.compile/auto)
 
 (defn clean [env]
   (u/delete-directory (:target-path env)))
 
-(defn once [env])
+(def once fuse.compile/once)
 
 ;;;; Installing
 
