@@ -36,8 +36,11 @@
                (.getCanonicalPath f)))
     (.mkdir f)))
 
-(defn delete-directory [f]
+(defn delete-directory [f & {:keys [prefix print?]
+                             :or {print? true}}]
   (when (.exists f)
+    (if print?
+      (info (str prefix "Removing") (.getCanonicalPath f)))
     (FileUtils/delete f FileUtils/RECURSIVE)))
 
 ;;;; JGit progress indicator
