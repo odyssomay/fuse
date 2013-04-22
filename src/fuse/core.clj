@@ -48,7 +48,12 @@
     (u/info "    * init")
     (.call (.submoduleInit git))
     (u/info "    * update")
-    (.call (.submoduleUpdate git))))
+    (doto
+      (.submoduleUpdate git)
+      (.setProgressMonitor
+        (u/progress-printer "    * "
+                            "      "))
+      .call)))
 
 (defn test-clojurec [env]
   (u/info " 3. Testing clojurec"))
