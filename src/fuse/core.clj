@@ -15,9 +15,7 @@
   (u/error "Not implemented yet, sorry! :("))
 
 (defn clean [env]
-  (let [f (:target-path env)]
-    (u/info "Removing" (.getCanonicalPath f))
-    (u/delete-directory f)))
+  (u/delete-directory (:target-path env)))
 
 (defn once [env])
 
@@ -26,10 +24,7 @@
 (defn install [env] (fuse.install/install env))
 
 (defn uninstall [env]
-  (let [f (:install-path env)]
-    (if (.exists f)
-      (u/info "Removing" (.getCanonicalPath f)))
-    (u/delete-directory f)))
+  (u/delete-directory (:install-path env)))
 
 (defn upgrade [env] (fuse.install/upgrade env))
 
@@ -62,22 +57,10 @@
 ;;;;
 ;;;; Directories
 
-(defn create-fuse-dir [env]
-  (let [f (:install-path env)]
-    (when-not (.exists f)
-      (u/info "Creating install directory" (.getCanonicalPath f))
-      (.mkdir f))))
-
-(defn create-fuse-target-dir [env]
-  (let [f (:target-path env)]
-    (when-not (.exists f)
-      (u/info "Creating target directory"
-              (.getCanonicalPath f))
-      (.mkdir f))))
-
 (defn create-directories [env]
-  (create-fuse-dir env)
-  (create-fuse-target-dir env))
+  (u/create-directory (:install-path env) "install")
+  (u/create-directory (:cljc-path env))
+  (u/create-directory (:target-path env) "target"))
 
 ;;;;
 ;;;; Env
