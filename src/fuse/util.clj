@@ -28,6 +28,14 @@
 ;;;;
 ;;;; Misc
 
+(defn create-directory [f & [directory-name]]
+  (when-not (.exists f)
+    (info (str "Creating "
+               directory-name
+               (if directory-name " ")
+               (.getCanonicalPath f)))
+    (.mkdir f)))
+
 (defn delete-directory [f]
   (when (.exists f)
     (FileUtils/delete f FileUtils/RECURSIVE)))
