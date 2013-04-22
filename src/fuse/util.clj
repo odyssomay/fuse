@@ -1,4 +1,5 @@
-(ns fuse.util)
+(ns fuse.util
+  (:import org.eclipse.jgit.util.FileUtils))
 
 ;;;; Print
 
