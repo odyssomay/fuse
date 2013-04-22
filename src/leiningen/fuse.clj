@@ -1,5 +1,7 @@
 (ns leiningen.fuse
   (:use [fuse.core])
+  (:require (fuse [core :as c]
+                  [util :as u]))
   (:require [clojure.java.io :as jio]
             [leiningen.core.user :as lein-user]))
 
@@ -9,14 +11,14 @@
 (defn create-fuse-dir [env]
   (let [f (:fuse-path env)]
     (when-not (.exists f)
-      (info "Creating fuse directory" (.getCanonicalPath f))
+      (u/info "Creating fuse directory" (.getCanonicalPath f))
       (.mkdir f))))
 
 (defn create-fuse-target-dir [env]
   (let [f (:target-path env)]
     (when-not (.exists f)
-      (info "Creating fuse target directory"
-            (.getCanonicalPath f))
+      (u/info "Creating fuse target directory"
+              (.getCanonicalPath f))
       (.mkdir f))))
 
 (defn create-directories [env]
@@ -74,22 +76,22 @@
   [project & args]
   (let [subtask (if (empty? args) "once" (first args))
         f (case subtask
-            "auto"  auto
-            "clean" clean
-            "once"  once
+            "auto"  c/auto
+            "clean" c/clean
+            "once"  c/once
             
-            "install"   install
-            "reinstall" reinstall
-            "uninstall" uninstall
-            "upgrade"   upgrade
+            "install"   c/install
+            "reinstall" c/reinstall
+            "uninstall" c/uninstall
+            "upgrade"   c/upgrade
             
-            "test"         test-run
-            "clojure-test" clojure-test-run
+            "test"         c/test-run
+            "clojure-test" c/clojure-test-run
             
-            (do (error (str "fuse does not have a subtask called '" subtask "'"))
-              (info "\nSee 'lein help fuse' for available subtasks.")))
+            (do (u/error (str "fuse does not have a subtask called '" subtask "'"))
+              (u/info "\nSee 'lein help fuse' for available subtasks.")))
         env (project->env project)]
-    (when (check-for-gcc env)
+    (when (c/check-for-gcc env)
       (create-directories env)
-      (install-if-not-installed env)
+      (c/install-if-not-installed env)
       (f env))))
