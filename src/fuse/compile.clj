@@ -1,4 +1,4 @@
-(ns fuse.compiler)
+(ns fuse.compile)
 
 (defn compile-file [env f])
 
