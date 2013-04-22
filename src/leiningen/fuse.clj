@@ -63,7 +63,6 @@
    
    Installation subtasks:
     install          Install clojurec (does nothing if already installed).
-    reinstall        Same as remove + install.
     uninstall        Remove clojurec installation.
     upgrade          Upgrade clojurec to latest version (git).
    

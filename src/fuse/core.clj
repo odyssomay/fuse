@@ -97,8 +97,6 @@
   (let [f (:install-path env)]
     (u/delete-directory f)))
 
-(defn reinstall [env] (uninstall env) (install env))
-
 (defn upgrade [env] (install-clojurec env true))
 
 ;;;; Testing
