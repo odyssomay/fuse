@@ -86,7 +86,7 @@
 (defn install [env] (install-clojurec env false))
 
 (defn uninstall [env]
-  (let [f (:fuse-path env)]
+  (let [f (:install-path env)]
     (u/delete-directory f)))
 
 (defn reinstall [env] (uninstall env) (install env))
