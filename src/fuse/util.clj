@@ -20,7 +20,7 @@
                 RESET)))
 
 (defn section [& args] (printc CYAN   args))
-(defn info    [& args] (printc WHITE  args))
+(defn info    [& args] (printc RESET  args))
 (defn warning [& args] (printc YELLOW args))
 (defn error   [& args] (printc RED    args))
 (defn success [& args] (printc GREEN  args))
@@ -70,4 +70,3 @@
       (start [this total-tasks])
       (update [this completed]
         (swap! finished + completed)))))
-
