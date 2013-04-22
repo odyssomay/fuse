@@ -31,8 +31,8 @@
   (u/info " 1. Downloading clojurec")
   (let [target (:cljc-path env)]
     (when (.exists target)
-      (u/info "    ...already exists"
-              "(see subtasks upgrade and reinstall)"))
+      (u/info "    * Removing previous installation")
+      (u/delete-directory target))
     (when-not (.exists target)
       (doto (CloneCommand.)
         (.setURI "https://github.com/schani/clojurec.git")
