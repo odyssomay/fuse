@@ -37,6 +37,9 @@
       (doto (CloneCommand.)
         (.setURI "https://github.com/schani/clojurec.git")
         (.setDirectory target)
+        (.setProgressMonitor
+          (u/progress-printer "    * "
+                              "      "))
         (.call)))))
 
 (defn setup-submodules [env]
