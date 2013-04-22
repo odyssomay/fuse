@@ -21,12 +21,12 @@
 
 ;;;; Installing
 
-(defn install [env] (fuse.install/install env))
+(def install fuse.install/install)
 
 (defn uninstall [env]
   (u/delete-directory (:install-path env)))
 
-(defn upgrade [env] (fuse.install/upgrade env))
+(def upgrade fuse.install/upgrade)
 
 ;;;; Testing
 
