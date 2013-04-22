@@ -6,44 +6,6 @@
             [leiningen.core.user :as lein-user]))
 
 ;;;;
-;;;; Directories
-
-(defn create-fuse-dir [env]
-  (let [f (:install-path env)]
-    (when-not (.exists f)
-      (u/info "Creating fuse directory" (.getCanonicalPath f))
-      (.mkdir f))))
-
-(defn create-fuse-target-dir [env]
-  (let [f (:target-path env)]
-    (when-not (.exists f)
-      (u/info "Creating fuse target directory"
-              (.getCanonicalPath f))
-      (.mkdir f))))
-
-(defn create-directories [env]
-  (create-fuse-dir env)
-  (create-fuse-target-dir env))
-
-;;;;
-;;;; Env
-
-(defn project->env [project]
-  (let [env (:fuse project)
-        fuse-dir (or (:install-path env)
-                     (jio/file (lein-user/leiningen-home)
-                               "fuse"))
-        cljc-dir (jio/file fuse-dir "clojurec")
-        target-path (or (:target-path env)
-                        (jio/file (:target-path project) "fuse"))
-        env (merge {:gcc-command "gcc"}
-                   env
-                   {:install-path (jio/file fuse-dir)
-                    :target-path (jio/file target-path)
-                    :cljc-path (jio/file cljc-dir)})]
-    env))
-
-;;;;
 ;;;; Task
 
 (defn fuse
@@ -72,23 +34,6 @@
   {:arglists '([project]
                [project subtask])}
   [project & args]
-  (let [subtask (if (empty? args) "once" (first args))
-        f (case subtask
-            "auto"  c/auto
-            "clean" c/clean
-            "once"  c/once
-            
-            "install"   c/install
-            "uninstall" c/uninstall
-            "upgrade"   c/upgrade
-            
-            "test"         c/test-run
-            "clojure-test" c/clojure-test-run
-            
-            (do (u/error (str "fuse does not have a subtask called '" subtask "'"))
-              (u/info "\nSee 'lein help fuse' for available subtasks.")))
-        env (project->env project)]
-    (when (c/check-for-gcc env)
-      (create-directories env)
-      (c/install-if-not-installed env)
-      (f env))))
+  (let [subtask (if (empty? args)
+                  "once" (first args))]
+    (c/run-subtask project subtask)))
