@@ -1,6 +1,7 @@
 (ns fuse.util
   (:import org.eclipse.jgit.util.FileUtils))
 
+;;;;
 ;;;; Print
 
 (def RESET  "\u001B[0m")
@@ -23,6 +24,7 @@
 (defn error   [& args] (printc RED    args))
 (defn success [& args] (printc GREEN  args))
 
+;;;;
 ;;;; File
 
 (defn delete-directory [f]
