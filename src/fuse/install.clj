@@ -32,7 +32,7 @@
   (let [target (:cljc-path env)]
     (when (.exists target)
       (u/info "    * Removing previous installation")
-      (u/delete-directory target))
+      (u/delete-directory target :print? false))
     (when-not (.exists target)
       (doto (CloneCommand.)
         (.setURI "https://github.com/schani/clojurec.git")
