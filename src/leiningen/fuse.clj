@@ -9,7 +9,7 @@
 ;;;; Directories
 
 (defn create-fuse-dir [env]
-  (let [f (:fuse-path env)]
+  (let [f (:install-path env)]
     (when-not (.exists f)
       (u/info "Creating fuse directory" (.getCanonicalPath f))
       (.mkdir f))))
