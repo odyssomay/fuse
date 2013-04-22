@@ -6,4 +6,6 @@
 
 (defn compile-run [env])
 
-(defn auto-compile [env])
+(defn once [env])
+
+(defn auto [env])
