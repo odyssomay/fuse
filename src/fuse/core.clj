@@ -70,8 +70,9 @@
                      (jio/file (lein-user/leiningen-home)
                                "fuse"))
         cljc-dir (jio/file fuse-dir "clojurec")
-        target-path (or (:target-path env)
-                        (jio/file (:target-path project) "fuse"))
+        target-path (jio/file (:target-path project)
+                              (or (:target-path env)
+                                  "fuse"))
         env (merge {:gcc-command "gcc"}
                    env
                    {:install-path (jio/file fuse-dir)
