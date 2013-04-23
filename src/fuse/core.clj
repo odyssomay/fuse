@@ -43,7 +43,7 @@
 
 (defn check-for-gcc [env]
   (try
-    (jsh/sh (:gcc-command env) "--version")
+    (jsh/sh (:cc env) "--version")
     true
     (catch java.io.IOException e
       (u/error "Couldn't run gcc.")
@@ -73,7 +73,7 @@
         target-path (jio/file (:target-path project)
                               (or (:target-path env)
                                   "fuse"))
-        env (merge {:gcc-command "gcc"}
+        env (merge {:cc "gcc"}
                    env
                    {:install-path (jio/file fuse-dir)
                     :target-path (jio/file target-path)
